@@ -101,7 +101,7 @@ App (bootstrap->LayoutComponent)
 
 ### Mapa
 <p align="center"> 
-   <span><img src="screenshots/modules.png" width="400px"/></span> 
+   <span><img src="screenshots/modules.png" width="600px"/></span> 
 </p> 
 
 El core.module encapsula la estructura principal de la aplicación a través del componente LayoutComponent. Lo hace visible al AppModule   
