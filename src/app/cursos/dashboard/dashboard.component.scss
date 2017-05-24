@@ -1,0 +1,68 @@
+@import '../../scss/_variables';
+.cursos-disponibles {
+    color: white;
+    background-color: $bgColorTertiary;
+}
+
+.cursos-publicados {
+    color: white;
+    background-color: $bgColorPrimary;
+}
+
+.cursos-suscritos {
+    color: white;
+    background-color: $bgColorSecundary;
+}
+
+li {
+    list-style: none
+}
+
+h2 {
+    text-decoration: underline;
+}
+
+.principal {
+    background-color: #186ba0;
+    color: white;
+    ;
+}
+
+.ui-widget-header .ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-state-default {
+    /* border: 1px solid #d6d6d6; */
+    border: 0px;
+    background: none;
+}
+
+.ui-widget-header .ui-state-active,
+.ui-widget-content .ui-state-active,
+.ui-state-active {
+    border-color: #bebebe;
+    background: #186ba0;
+    color: #212121;
+}
+
+.arrastrar-aqui {
+    width: 80%;
+    height: 200px;
+    border: .3rem dotted $bgColorPlayer;
+    color: $bgColorPlayer;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+}
+
+.header {
+    background-color: $bgColorSecundary;
+    color: white;
+    display: flex;
+    justify-content: center;
+    .avatar {
+        align-self: center;
+        margin-right: 2rem;
+    }
+}

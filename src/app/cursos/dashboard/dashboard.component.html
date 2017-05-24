@@ -1,0 +1,79 @@
+<p-growl [(value)]="msgs" sticky="sticky">
+</p-growl>
+<div class="header">
+    <a class="avatar" href="https://github.com/migueluvieu" title="My Repository"> <span><img src="./../../../assets/images/avatar.png" /></span></a>
+    <h1 class="title"> Suscripciones virtuales a Cursos</h1>
+</div>
+<section class="principal">
+
+    <p> (*) Arrastra Cursos Disponibles en Cursos Publicados, elige Suscripción y recíbelos en Cursos Suscritos</p>
+    <div class="ui-grid ui-grid-pad ui-grid-responsive principal">
+
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4 ui-widget-content cursos-disponibles">
+                <h2>Cursos Disponibles</h2>
+                <p>(*) Solo puedes ver el temario de cada curso</p>
+                <ul style="margin:0;padding:0.1rem">
+                    <li *ngFor="let curso of catalogoCursos; let i = index" class="ui-state-default ui-helper-clearfix" [pDraggable]="containerDragDrop" (onDragStart)="dragStart($event,curso, i)" (onDragEnd)="dragEnd($event)">
+                        <app-curso-info [curso]="curso" [type]="CURSOS_TYPE.DISPONIBLES"></app-curso-info>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="ui-grid-col-4 ui-widget-content " [pDroppable]="containerDragDrop" (onDrop)="drop($event)" [ngClass]="{'ui-state-highlight':draggedCurso}">
+                <h2>Cursos Publicados</h2>
+                <p>(*) Solo puedes ver el temario de cada curso</p>
+                <div *ngIf="cursosPublicados.length===0; else cursosPublicadostpl">
+
+                    <div class="arrastrar-aqui">
+                        Arrastra aquí los cursos para publicarlos
+                    </div>
+                </div>
+                <ng-template #cursosPublicadostpl>
+                    <ul style="margin:0;padding:0.1rem">
+                        <li *ngFor="let curso of cursosPublicados; let i = index" class="ui-state-default ui-helper-clearfix">
+                            <app-curso-info [curso]="curso" [type]="CURSOS_TYPE.PUBLICADOS"></app-curso-info>
+                        </li>
+                    </ul>
+                </ng-template>
+
+            </div>
+
+
+            <div class="ui-grid-col-4 ui-widget-content cursos-suscritos">
+                <h2>Cursos Suscritos</h2>
+                <p>(*) Ya puedes ver los videos de los cursos!!!</p>
+                <div *ngIf="!existeSuscripcion ; else cursosSuscritostpl"> ...pero aún no estás suscrito a ninguno </div>
+
+                <ng-template #cursosSuscritostpl>
+                    <div *ngIf="cursosSuscritos.length===0"> Debes publicar algún curso a partir de este momento para que aparezca aquí </div>
+                    <ul style="margin:0;padding:0.1rem">
+                        <li *ngFor="let curso of cursosSuscritos; let i = index" class="ui-state-default ui-helper-clearfix">
+                            <app-curso-info [curso]="curso" [type]="CURSOS_TYPE.SUSCRITOS"></app-curso-info>
+                        </li>
+                    </ul>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+
+    <div class="ui-g">
+
+        <p-fieldset class="ui-g-12 ui-lg-4 ui-state-active" legend="Suscripción (Subject)" [toggleable]="true">
+            <p>Suscríbete ahora y recibirás todos los cursos PUBLICADOS a partir de este momento.</p>
+            <p-toggleButton class="ui-button-success" [(ngModel)]="lblSubjNoSubs" onLabel="¡¡Quiero suscribirme!!" offLabel="Cancelar suscripción..." onIcon="fa-hand-peace-o" offIcon="fa-hand-scissors-o" (onChange)="suscribir(SUSCRIP_TYPE.SUBJECT,$event)"></p-toggleButton>
+        </p-fieldset>
+        <p-fieldset class="ui-g-12 ui-lg-4 ui-state-active" legend="Suscripción (Behavior)" [toggleable]="true">
+            <p>Suscríbete ahora y recibirás los cursos PUBLICADOS desde ahora Y EL ACTUAL.</p>
+            <p-toggleButton class="ui-button-success" [(ngModel)]="lblBehvNoSubs" onLabel="¡¡Quiero suscribirme!!" offLabel="Cancelar suscripción..." onIcon="fa-hand-peace-o" offIcon="fa-hand-scissors-o" (onChange)="suscribir(SUSCRIP_TYPE.BEHAVIOR,$event)"></p-toggleButton>
+        </p-fieldset>
+        <p-fieldset class="ui-g-12 ui-lg-4 ui-state-active" legend="Suscripción (Replay)" [toggleable]="true">
+            <p>Suscríbete ahora y recibirás todos los cursos PUBLICADOS y los que se PUBLICARÁN.</p>
+            <p-toggleButton class="ui-button-success" [(ngModel)]="lblReplayNoSubs" onLabel="¡¡Quiero suscribirme!!" offLabel="Cancelar suscripción..." onIcon="fa-hand-peace-o" offIcon="fa-hand-scissors-o" (onChange)="suscribir(SUSCRIP_TYPE.REPLAY,$event)"></p-toggleButton>
+        </p-fieldset>
+    </div>
+
+</section>

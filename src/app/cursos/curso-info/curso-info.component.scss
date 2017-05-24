@@ -1,0 +1,84 @@
+@import '../../scss/_variables';
+.curso-card-disponibles {
+    color: white;
+    background-color: $bgColorPrimary;
+    padding: 1rem;
+    margin-bottom: .5rem;
+    font-size: 1.3rem;
+    border-radius: 40px;
+    display: flex;
+    justify-content: space-between;
+    .curso-header {
+        display: flex;
+        flex: 0 1 300px
+    }
+    .curso-arrow,
+    .curso-play {
+        align-self: center;
+        color: white;
+    }
+}
+
+.curso-icon {
+    margin: 0 1.2rem;
+    align-self: center
+}
+
+.curso-title {
+    align-self: center;
+    font-style: bold;
+    font-size: 1.2rem
+}
+
+.curso-card-publicados {
+    @extend .curso-card-disponibles;
+    background-color: $bgColorSecundary;
+}
+
+.curso-card-suscritos {
+    @extend .curso-card-disponibles;
+    background-color: $bgColorTertiary;
+}
+
+.curso-player {
+    width: 100%;
+    display: flex;
+    background-color: $bgColorPlayer;
+    color: white;
+    .video-item {
+        display: flex;
+    }
+    .video-thumbnail {
+        height: 3rem;
+        background-image: cover;
+        margin-right: 0.5rem;
+    }
+    .curso-video {
+        align-self: center;
+    }
+    .curso-temario {
+        margin-left: -1rem;
+        margin-right: 1rem;
+        margin-top: .6rem;
+        align-self: center;
+    }
+    li {
+        list-style: none
+    }
+    .curso-video-iframe {
+        background-image: url("../../../assets/images/iPadPro2.png");
+        background-position: top;
+        background-repeat: no-repeat, repeat;
+        width: 620px;
+        height: 350px;
+        padding-top: 18px;
+        padding-left: .5rem;
+    }
+}
+
+.selected {
+    color: $bgColorSecundary;
+    border: 1px solid white;
+    padding-right: .2rem;
+    padding-top: .2rem;
+}

@@ -1,28 +1,220 @@
-# SubjectBehaviorEj
+# Suscripciones a Cursos (Subject Behavior Replay)
+Ejemplo de una simple funcionalidad para publicar cursos virtuales y suscribirse a ellos de diferentes maneras, bien sea a través de un Subject, un BehaviorSubject y un ReplaySubject. 
+También se prueba la librería ngPrime (PRimefaces para Angular). 
+Se puede suscribir a los cursos y ver los capítulos de los que consta.  
+Se comenta a continuación que es un subject y los 3 principales subjects que hay.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.1.
+## Demo 
+Demo [aquí](https://angulartraining-subject-cursos.firebaseapp.com) 
 
-## Development server
+<p align="center"> 
+   <span><img src="screenshots/demo.gif" width="600px"/></span> 
+</p> 
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## Subject, BehaviorSubject, ReplaySubject
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|module`.
+### Subjects
+Documentación [aquí](http://reactivex.io/documentation/subject.html)   
+Un subject actúa a la vez como observador y como un observable. Debido a que es un observador, puede suscribirse a uno o más observables, y porque es un observable, emitir valores a sus observers.
 
-## Build
+Por ejemplo un subject que emite el un valor a sus observers
+```bash
+let subject = new Subject <string>();
+subject.next('1');
+```
+El subject se puede publicar como observable para poder ser observado
+```bash
+let _subject = new Subject <string>();
+// se publica como observable, ahora se pueden suscribir a sus emisiones
+let subject$ = this._subject.asObservable();
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+let observer = subject$.subscribe (console.log)
+_subject.next('1');
+_subject.next('2');
+....
+```
+Y tb podrá emitir error y complete
+```bash
+_subject.error('Error forzado!');
+_subject.complete(); 
+```
 
-## Running unit tests
+### Diferencias 
+ Todos los mencionados son subject pero difieren en los siguientes aspectos
+ Cuando un observer se suscribe a un subject, este comienza a recibir eventos a partir de ese momento
+ ```bash
+  let _subject = new Subject <string>();
+  // se publica como observable, ahora se pueden suscribir a sus emisiones
+  let subject$ = this._subject.asObservable();
+   _subject.next('1');
+   _subject.next('2');
+  observer = this.subject$.subscribe(console.log);
+  _subject.next('4');
+  _subject.next('5');
+  //pintará por consola 4 y 5 
+  subject.complete();
+  observer.unsubscribe();
+ ```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+ Cuando un observer se suscribe a un BehaviorSubject este recibe el último valor emitido y todos lo valores que se emitan a continuación. El Behavior necesita de un valor inicial!
+  ```bash
+  let _behaviorSubject = new BehaviorSubject <string>('');
+  // se publica como observable, ahora se pueden suscribir a sus emisiones
+  let behaviorSubject$ = this._behaviorSubject.asObservable();
+   _behaviorSubject.next('1');
+   _behaviorSubject.next('2');
+  observer = this.behaviorSubject$.subscribe(console.log);
+  _behaviorSubject.next('4');
+  _behaviorSubject.next('5');
+  //pintará por consola 2, 4 y 5 (el 2 es el último valor prevcio a suscripción)
+  behaviorSubject.complete();
+  observer.unsubscribe();
+ ```
 
-## Running end-to-end tests
+ Y cuando un observer se suscribe a un ReplaySubject este recibe todos los valores emitidos previamente y todos lo valores que se emitan a continuación 
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
+  ```bash
+  let _replaySubject= new ReplaySubject<string>();
+  // se publica como observable, ahora se pueden suscribir a sus emisiones
+  let replaySubject$ = this._replaySubject.asObservable();
+   _replaySubject.next('1');
+   _replaySubject.next('2');
+  observer = replaySubject$.subscribe(console.log);
+  _replaySubject.next('4');
+  _replaySubject.next('5');
+  //pintará por consola 1, 2, 4 y 5 
+  replaySubject.complete();
+  observer.unsubscribe();
+ ```
 
-## Further help
+ Ver ejemplos en ejemplo.component.ts. Ver resultado de consola aquí [aquí](https://angulartraining-subject-cursos.firebaseapp.com/ejemplo) 
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## Estructura módulos
+La jerarquía de módulos se establece de la siguiente forma
+App (bootstrap->LayoutComponent)
+  |_ core (exporta LayoutComponent)
+  |_ cursos
+  |_ ejemplo-consola
+
+<p align="center"> 
+   <span><img src="screenshots/modules.png" width="400px"/></span> 
+</p> 
+
+El core.module encapsula la estructura principal de la aplicación a través del componente LayoutComponent. Lo hace visible al AppModule   
+```bash
+exports: [
+    LayoutComponent
+  ]
+```
+y hará el bootstrap de la aplicación en el AppModule
+```bash
+NgModule({
+  declarations: [],
+  imports: [
+    BrowserModule,
+    CoreModule,
+    FormsModule,
+    HttpModule,
+    .....
+  ],
+  providers: [],
+  bootstrap: [LayoutComponent]
+})
+```
+
+Este componente renderiza en su template simplemente el <router-oulet> principal de la aplicación, ya que carecemos de menu
+```bash
+<router-outlet></router-outlet>
+```
+
+ ## Lazy-Loading
+Los módulos son cargados dinámicamente. Se genera bundle (chunks) de cada uno y se cargan bajo demanda
+
+```bash
+  const routes: Routes = [
+ { path: 'ejemplo',  loadChildren: 'app/ejemplo-consola/ejemplo-consola.module#EjemploConsolaModule'},
+ { path: '', loadChildren: 'app/cursos/cursos.module#CursosModule' }
+];
+```
+
+## Primefaces (ngPrime)
+Para este ejemplo se utiliza ngPrime (Primefaces para Angular)
+Ver documentación [aquí](https://www.primefaces.org/primeng/#/)  
+
+Para instalar librerías 
+```bash
+ npm install primeng --save
+ npm install @angular/animations --save
+ npm install font-awesome --save
+``` 
+Añadir dependencias de css
+```bash
+ "styles": [
+            "../node_modules/primeng/resources/primeng.min.css",
+            "../node_modules/primeng/resources/themes/omega/theme.css",
+            "../node_modules/font-awesome/css/font-awesome.min.css",
+            ...
+        ]
+```
+Importar animaciones en el módulo root app 
+```bash
+ imports: [
+    BrowserModule,
+    FormsModule,
+    BrowserAnimationsModule,
+  ....
+ ```
+ y para cada componente que utilizemos, es necesario importar de igual forma el módulo correspondiente (para componente OrderList por ejemplo)  
+```bash
+ imports: [
+    BrowserModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    OrderListModule
+```
+En este caso lo meteremos en el cursos.module
+
+### Evento Drag Drop
+Para mobile este evento de html nativo no es (soportado)[https://www.codeproject.com/Articles/1091766/Add-support-for-standard-HTML-Drag-and-Drop-operat], por ello incluimos un polyfill (DragDropTouch.js) en el angular-cli.json
+```bash
+ "scripts": [
+            "../src/third-parts/DragDropTouch.js"
+        ]
+```
+## Documentación
+Ver Documentacion de la aplicación [aqui](https://angulartraining-subject-cursos.firebaseapp.com/documentation/) 
+
+### Generar documentación
+
+Instalación global
+```bash
+npm install -g @compodoc/compodoc
+```
+Instalación local
+```bash
+npm install --save-dev @compodoc/compodoc
+```
+Definir script en package.json (se añade -a screenshots para llevar la carpeta de screenshots al generado, y el theme)
+```bash
+"scripts": {
+    ...
+  "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -a screenshots"
+}
+```
+Lanzar script 
+```bash
+npm run compodoc
+```
+Se genera carpeta /documentation
+
+## Deploy firebase
+Se crea script en el package.json que borra /dist, genera el build para prod, documentación y despliega en firebase  
+```bash
+"scripts": {
+    ...
+  "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -a screenshots",
+  "deploy-firebase": "del dist && ng build --env=prod --aot && npm run compodoc && move documentation dist && firebase deploy"
+}
+```
+

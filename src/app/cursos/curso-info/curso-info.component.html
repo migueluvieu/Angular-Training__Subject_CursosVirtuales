@@ -1,0 +1,38 @@
+<div [ngClass]="getClass()" (click)="show()">
+    <div class="curso-header">
+        <i class="curso-icon fa {{curso.icon}} fa-2x "></i>
+        <div class="curso-title">{{curso.nombre}}</div>
+    </div>
+
+    <div [ngSwitch]="type">
+        <i class="curso-arrow fa fa-2x fa-arrows" *ngSwitchCase="CURSOS_TYPE.DISPONIBLES"></i>
+        <i class="curso-play fa fa-2x fa-list-ol" *ngSwitchCase="CURSOS_TYPE.PUBLICADOS"></i>
+        <i class="curso-play fa fa-2x fa-play-circle-o" *ngSwitchCase="CURSOS_TYPE.SUSCRITOS"></i>
+
+    </div>
+</div>
+
+<p-dialog [(visible)]="display" modal="modal" [responsive]="true" #op>
+    <p-header>
+        <i class="curso-icon fa {{curso.icon}} fa-2x "></i>
+        <span class="curso-title">{{curso.nombre}}</span>
+    </p-header>
+    <div class="curso-player">
+        <div class="curso-video" *ngIf='type===CURSOS_TYPE.SUSCRITOS'>
+            <div class="curso-video-iframe">
+                <iframe *ngIf="playing" width="520" height="300" [src]="playing" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="curso-temario">
+            <ul>
+                <li *ngFor="let video of curso.temario; let i =index">
+                    <div [ngClass]="{'video-item':true, 'selected': i==indexSelected} " (click)="play(video.url,i)">
+                        <img class="video-thumbnail" [src]="video.thumbnail" />
+                        <p class="video-title">{{video.titulo}}</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</p-dialog>
