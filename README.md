@@ -88,7 +88,7 @@ subject.complete();
   observer.unsubscribe();
  ```
 
- Ver ejemplos en archivo [ejemplo.component.ts] (https://github.com/migueluvieu/Angular-Training__Subject_Behavior_Replay_CursosVirtuales/blob/master/src/app/ejemplo-consola/ejemplo/ejemplo.component.ts) . Ver resultado de consola  [aquí](https://angulartraining-subject-cursos.firebaseapp.com/ejemplo) 
+ Ver ejemplos en archivo ejemplo.component.ts [ver] (https://github.com/migueluvieu/Angular-Training__Subject_Behavior_Replay_CursosVirtuales/blob/master/src/app/ejemplo-consola/ejemplo/ejemplo.component.ts) . Ver resultado de consola  [aquí](https://angulartraining-subject-cursos.firebaseapp.com/ejemplo) 
 
 ## Estructura módulos
 La jerarquía de módulos se establece de la siguiente forma
