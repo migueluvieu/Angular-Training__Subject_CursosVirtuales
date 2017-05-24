@@ -1,6 +1,6 @@
 # Suscripciones a Cursos (Subject Behavior Replay)
-Ejemplo de una simple funcionalidad para publicar cursos virtuales y suscribirse a ellos de diferentes maneras, bien sea a través de un Subject, un BehaviorSubject y un ReplaySubject. 
-También se prueba la librería ngPrime (PRimefaces para Angular). 
+Ejemplo de una simple aplicación para publicar cursos virtuales y suscribirse a ellos de diferentes maneras, bien sea a través de un Subject, un BehaviorSubject o un ReplaySubject. 
+También se prueba la librería ngPrime (Primefaces para Angular). 
 Se puede suscribir a los cursos y ver los capítulos de los que consta.  
 Se comenta a continuación que es un subject y los 3 principales subjects que hay.
 
@@ -25,33 +25,33 @@ subject.next('1');
 ```
 El subject se puede publicar como observable para poder ser observado
 ```bash
-let _subject = new Subject <string>();
+let subject = new Subject <string>();
 // se publica como observable, ahora se pueden suscribir a sus emisiones
-let subject$ = this._subject.asObservable();
+let subject$ = subject.asObservable();
 
 let observer = subject$.subscribe (console.log)
-_subject.next('1');
-_subject.next('2');
+subject.next('1');
+subject.next('2');
 ....
 ```
 Y tb podrá emitir error y complete
 ```bash
-_subject.error('Error forzado!');
-_subject.complete(); 
+subject.error('Error forzado!');
+subject.complete(); 
 ```
 
 ### Diferencias 
  Todos los mencionados son subject pero difieren en los siguientes aspectos
  Cuando un observer se suscribe a un subject, este comienza a recibir eventos a partir de ese momento
  ```bash
-  let _subject = new Subject <string>();
+  let subject = new Subject <string>();
   // se publica como observable, ahora se pueden suscribir a sus emisiones
-  let subject$ = this._subject.asObservable();
-   _subject.next('1');
-   _subject.next('2');
+  let subject$ = this.subject.asObservable();
+  subject.next('1');
+  subject.next('2');
   observer = this.subject$.subscribe(console.log);
-  _subject.next('4');
-  _subject.next('5');
+  subject.next('4');
+  subject.next('5');
   //pintará por consola 4 y 5 
   subject.complete();
   observer.unsubscribe();
@@ -59,14 +59,14 @@ _subject.complete();
 
  Cuando un observer se suscribe a un BehaviorSubject este recibe el último valor emitido y todos lo valores que se emitan a continuación. El Behavior necesita de un valor inicial!
   ```bash
-  let _behaviorSubject = new BehaviorSubject <string>('');
+  let behaviorSubject = new BehaviorSubject <string>('');
   // se publica como observable, ahora se pueden suscribir a sus emisiones
-  let behaviorSubject$ = this._behaviorSubject.asObservable();
-   _behaviorSubject.next('1');
-   _behaviorSubject.next('2');
+  let behaviorSubject$ = this.behaviorSubject.asObservable();
+  behaviorSubject.next('1');
+  behaviorSubject.next('2');
   observer = this.behaviorSubject$.subscribe(console.log);
-  _behaviorSubject.next('4');
-  _behaviorSubject.next('5');
+  behaviorSubject.next('4');
+  behaviorSubject.next('5');
   //pintará por consola 2, 4 y 5 (el 2 es el último valor prevcio a suscripción)
   behaviorSubject.complete();
   observer.unsubscribe();
@@ -75,14 +75,14 @@ _subject.complete();
  Y cuando un observer se suscribe a un ReplaySubject este recibe todos los valores emitidos previamente y todos lo valores que se emitan a continuación 
 
   ```bash
-  let _replaySubject= new ReplaySubject<string>();
+  let replaySubject= new ReplaySubject<string>();
   // se publica como observable, ahora se pueden suscribir a sus emisiones
   let replaySubject$ = this._replaySubject.asObservable();
-   _replaySubject.next('1');
-   _replaySubject.next('2');
+  replaySubject.next('1');
+  replaySubject.next('2');
   observer = replaySubject$.subscribe(console.log);
-  _replaySubject.next('4');
-  _replaySubject.next('5');
+  replaySubject.next('4');
+  replaySubject.next('5');
   //pintará por consola 1, 2, 4 y 5 
   replaySubject.complete();
   observer.unsubscribe();
@@ -93,10 +93,13 @@ _subject.complete();
 ## Estructura módulos
 La jerarquía de módulos se establece de la siguiente forma
 App (bootstrap->LayoutComponent)
-  |_ core (exporta LayoutComponent)
-  |_ cursos
-  |_ ejemplo-consola
+ <ul>
+  <li>core (exporta LayoutComponent)</li>
+  <li>cursos</li>
+  <li>ejemplo-consola</li>
+</ul>
 
+### Mapa
 <p align="center"> 
    <span><img src="screenshots/modules.png" width="400px"/></span> 
 </p> 
@@ -133,9 +136,9 @@ Los módulos son cargados dinámicamente. Se genera bundle (chunks) de cada uno 
 
 ```bash
   const routes: Routes = [
- { path: 'ejemplo',  loadChildren: 'app/ejemplo-consola/ejemplo-consola.module#EjemploConsolaModule'},
- { path: '', loadChildren: 'app/cursos/cursos.module#CursosModule' }
-];
+    { path: 'ejemplo',  loadChildren:   'app/ejemplo-consola/ejemplo-consola.module#EjemploConsolaModule'},
+    { path: '', loadChildren: 'app/cursos/cursos.module#CursosModule' }
+  ];
 ```
 
 ## Primefaces (ngPrime)
@@ -176,7 +179,7 @@ Importar animaciones en el módulo root app
 En este caso lo meteremos en el cursos.module
 
 ### Evento Drag Drop
-Para mobile este evento de html nativo no es (soportado)[https://www.codeproject.com/Articles/1091766/Add-support-for-standard-HTML-Drag-and-Drop-operat], por ello incluimos un polyfill (DragDropTouch.js) en el angular-cli.json
+Para mobile este evento de html nativo no es [soportado]([https://www.codeproject.com/Articles/1091766/Add-support-for-standard-HTML-Drag-and-Drop-operat), por ello incluimos un polyfill (DragDropTouch.js) en el angular-cli.json
 ```bash
  "scripts": [
             "../src/third-parts/DragDropTouch.js"
