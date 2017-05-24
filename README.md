@@ -88,7 +88,7 @@ subject.complete();
   observer.unsubscribe();
  ```
 
- Ver ejemplos en ejemplo.component.ts. Ver resultado de consola aquí [aquí](https://angulartraining-subject-cursos.firebaseapp.com/ejemplo) 
+ Ver ejemplos en [ejemplo.component.ts] (src/app/ejemplo-consola/ejemplo-consola.module.ts) . Ver resultado de consola aquí [aquí](https://angulartraining-subject-cursos.firebaseapp.com/ejemplo) 
 
 ## Estructura módulos
 La jerarquía de módulos se establece de la siguiente forma
