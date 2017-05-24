@@ -35,12 +35,20 @@ export class EjemploComponent implements OnInit {
 
 
 ngOnInit() {
-  this._render ('/************* FROM APP.COMPONENT ****************/' );
+  this._render ('<h2> EJEMPLOS TIPOS DE SUBJECT </h2>');
+  this._render ('<br>' );
+  this._render ('<h3> SUBJECT </h3>' );
   this._ejSubject();
+  this._render ('<br>' );
+  this._render ('<h3> BEHAVIOR-SUBJECT </h3>' );
   this._ejBehaviorSubject();
+  this._render ('<br>' );
+  this._render ('<h3> REPLAY-SUBJECT </h3>' );
   this._ejReplaySubject();
+  this._render ('<br>' );
+  this._render ('<h3> ARRAY </h3>' );
   this._ejArrays ();
-  this._render ('/************* FIN APP.COMPONENT ****************/' );
+
 }
 
 /**
@@ -49,7 +57,6 @@ ngOnInit() {
  * @memberOf AppComponent
  */
 private _ejSubject() {
-    this._render ('*** SUBJECT ***' );
     // emite valores pero aún no hay observers observadores
     this._subject.next('1');
     this._subject.next('2');
@@ -58,9 +65,9 @@ private _ejSubject() {
     this._render(' |_ Suscripción => 3 NO LE LLEGA, es el último emitido antes de la suscripción... ');
     // si no utilizásemos onError, onComplete directamente podrmos poner this.subject$.subscribe(console.log)
     this.observer = this.subject$.subscribe(
-        value => {this._render('_|_ onNext ', value); },
-        err => {this._render('_|_ onError ', err); },
-        () => {this._render('_|_ onCompleted!!!!'); }
+        value => {this._render('   |_ onNext ', value); },
+        err => {this._render('   |_ onError ', err); },
+        () => {this._render('   |_ onCompleted!!!!'); }
     );
     this._render('Emitidos x subject tras suscripción => ', 4 , 5);
     this._subject.next('4');
@@ -69,7 +76,6 @@ private _ejSubject() {
     // se pintará por consola 2 u 3
     this._subject.complete();
     this.observer.unsubscribe();
-    this._render ('**************************************************' );
 }
 
 /**
@@ -78,7 +84,6 @@ private _ejSubject() {
  * @memberOf AppComponent
  */
 private _ejBehaviorSubject() {
-  this._render ('*** BEHAVIOR-SUBJECT ***' );
   // emite valores pero aún no hay observers observadores
   this._behaviorSubject.next('1');
   this._behaviorSubject.next('2');
@@ -87,9 +92,9 @@ private _ejBehaviorSubject() {
   this._render(' |_ Suscripción => 3 es el último emitido antes de la suscripción, LE LLEGA!!!!... ');
   // si no utilizásemos onError, onComplete directamente podrmos poner this.subject$.subscribe(console.log)
   this.observer = this.behaviorSubject$.subscribe(
-        value => {this._render('_|_ onNext ', value); },
-        err => {this._render('_|_ onError ', err); },
-        () => {this._render('_|_ onCompleted!!!!'); }
+        value => {this._render('   |_ onNext ', value); },
+        err => {this._render('   |_ onError ', err); },
+        () => {this._render('   |_ onCompleted!!!!'); }
   );
   this._render('Emitidos x behaviorSubject tras suscripción => ', 4 , 5);
   this._behaviorSubject.next('4');
@@ -100,7 +105,6 @@ private _ejBehaviorSubject() {
   // al lanzar el complete, en el handler lo estamos desuscribiendo
   this._behaviorSubject.complete();
   this.observer.unsubscribe();
-  this._render ('**************************************************' );
 }
 
 /**
@@ -109,7 +113,6 @@ private _ejBehaviorSubject() {
  * @memberOf AppComponent
  */
 private _ejReplaySubject() {
-  this._render ('*** REPLAY-SUBJECT ***' );
   // emite valores pero aún no hay observers observadores
   this._replaySubject.next('1');
   this._replaySubject.next('2');
@@ -118,9 +121,9 @@ private _ejReplaySubject() {
   this._render(' |_ Suscripción => Le llegan todos los valores... ');
   // si no utilizásemos onError, onComplete directamente podrmos poner this.subject$.subscribe(console.log)
   this.observer = this.replaySubject$.subscribe(
-      value => {this._render('_|_ onNext ', value); },
-        err => {this._render('_|_ onError ', err); },
-        () => {this._render('_|_ onCompleted!!!!'); }
+      value => {this._render('   |_ onNext ', value); },
+        err => {this._render('   |_ onError ', err); },
+        () => {this._render('   |_ onCompleted!!!!'); }
   );
   this._render('Emitidos x replaySubject tras suscripción => ', 4 , 5);
   this._replaySubject.next('4');
@@ -130,25 +133,22 @@ private _ejReplaySubject() {
   this._replaySubject.complete();
   // una buena práctica es desuscribir en el destroy del componente
   this.observer.unsubscribe();
-  this._render ('**************************************************' );
 }
 
 private _ejArrays () {
-   this._render ('***  ARRAY  ***' );
    const array = [1, 2, 3];
    const subject = new Subject();
    const subject$ = subject.asObservable();
    subject.next(array);
    // no hay suscripción, no lo pinta
    const observer = subject$.subscribe(
-     value => {this._render('_|_ onNext ', value); },
-      err => {this._render('_|_ onError ', err); },
-      () => {this._render('_|_ onCompleted!!!!'); }
+     value => {this._render('  |_ onNext ', value); },
+      err => {this._render('  |_ onError ', err); },
+      () => {this._render(' |_ onCompleted!!!!'); }
    );
    array.push(4);
    subject.next(array); // [1, 2, 3, 4]}
    observer.unsubscribe();
-   this._render ('**************************************************' );
 }
 
 /**

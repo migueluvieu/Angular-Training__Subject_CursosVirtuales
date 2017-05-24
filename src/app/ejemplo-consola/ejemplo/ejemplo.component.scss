@@ -1,11 +1,12 @@
 .principal {
     display: flex;
-    justify-content: center
+    justify-content: center;
 }
 
 .codigo {
     text-align: left;
     background-color: black;
     color: white;
-    width: 80%
+    width: 80%;
+    padding: 1rem 1rem;
 }
